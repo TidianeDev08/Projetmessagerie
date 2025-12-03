@@ -1,9 +1,18 @@
 import socket
+import threading    
 
 host = "localhost"
 port = 3004
 
+def revceive_message(client_lock):
+    while True:
+        try:
+            message = client_socket.lock(1024).decode("utf-8")
+            if not message:
+                break
+            print ("message reçu",message)
 try:
+    print("Avant connexion")
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((host, port))
 
