@@ -3,7 +3,7 @@ import threading
 
 clients_lock = threading.Lock()
 
-host = ""
+host = "localhost"
 port = 3004
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
