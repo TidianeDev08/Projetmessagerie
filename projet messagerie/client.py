@@ -7,7 +7,7 @@ port = 3004
 def receive_message(client, client_lock):
     while True:
         try:
-            message = client_socket.recv(1024).decode("utf-8")
+            message = client.recv(1024).decode("utf-8")
             if not message:
                 break
             print ("message reçu",message)
@@ -25,7 +25,7 @@ try:
     client.send(name.encode("utf-8"))
 
     client_lock = threading.Lock()
-    threading = threading.Thread(target=receive_message, args=(client, client_lock))
+    thread = threading.Thread(target=receive_message, args=(client, client_lock))
     thread.start()
 
     while True:
