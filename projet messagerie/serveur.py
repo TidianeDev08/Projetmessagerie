@@ -44,13 +44,13 @@ def degerer_client(conn, addr):
             if not data:
                 break
 
-            # Commande /list
+           
             if data == "/list":
                 liste = ", ".join(clients_names.values())
                 conn.send(f"[Serveur] Utilisateurs connectés : {liste}".encode("utf-8"))
                 continue
 
-            # Commande /rename
+          
             if data.startswith("/rename"):
                 parts = data.split(" ", 1)
                 if len(parts) == 2:
@@ -60,7 +60,7 @@ def degerer_client(conn, addr):
                     broadcast_message(f"[Serveur] {ancien} s'appelle maintenant {nouveau}.")
                     continue
 
-            # Commande /whisper Nom Message
+        
             if data.startswith("/whisper"):
                 parts = data.split(" ", 2)
                 if len(parts) == 3:
@@ -73,7 +73,7 @@ def degerer_client(conn, addr):
                             break
                 continue
 
-            # Message normal
+           
             message_to_send = f"[{clients_names[conn]}] {data}"
             broadcast_message(message_to_send, conn)
             save_message(message_to_send)
