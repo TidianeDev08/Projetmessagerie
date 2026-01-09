@@ -38,10 +38,18 @@ def afficher_message():
     if data !="":
         try:
             client.send(data.encode("utf-8"))
-            ecrire_message.delete(0, "fin")
+            zones_messages.config(state="normal")
+            zones_messages.insert("end", f"[Moi] {data}\n")
+            zones_messages.config(state="disabled")
+            zones_messages.see("end")
 
-bouton = tk.Button(frame_bas, text="Envoyer", command=envoyer_message)
-bouton.pack(side="right")
+            entre_message.delete(0, "end")
+        excpet:
+            pass
+
+entre_message.bind("Return", afficher_message)
+bouton = tk.Button(ecrie_message, text="Envoyer", command=afficher_message)
+bouton.pack(side="right", padx=5)
 
 print("Démarrage client")
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
