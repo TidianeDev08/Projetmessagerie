@@ -1,6 +1,7 @@
 import socket
 import threading   
 import tkinter as tk 
+from tkinter import scrolledtext
 
 host = "localhost"
 port = 3004
@@ -34,17 +35,18 @@ def receive_message(client):
             break
 
 def afficher_message():
-    data = ecrire_message.get()
+    data = entre_message.get()
     if data !="":
         try:
             client.send(data.encode("utf-8"))
+
             zones_messages.config(state="normal")
             zones_messages.insert("end", f"[Moi] {data}\n")
             zones_messages.config(state="disabled")
             zones_messages.see("end")
 
             entre_message.delete(0, "end")
-        excpet:
+        except:
             pass
 
 entre_message.bind("Return", afficher_message)
@@ -52,18 +54,22 @@ bouton = tk.Button(ecrie_message, text="Envoyer", command=afficher_message)
 bouton.pack(side="right", padx=5)
 
 print("Démarrage client")
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect((host, port))
-
-print("Connecté au serveur")
-
+try:
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect((host, port))
+    print("Connecté au serveur")
 
     name = input("Ton nom ou pseudo : ")
     client.send(name.encode("utf-8"))
+
  
     thread = threading.Thread(target=receive_message, args=(client,))
     thread.deamon = True
     thread.start()
+    
+    fenetre.mainloop()
 
-fenetre.mainloop()
-client.close()
+except Exception as e:
+    print("Erreur de connexion (Le serveur est-il allumé ?) :", e)
+finally:
+    client.close()
